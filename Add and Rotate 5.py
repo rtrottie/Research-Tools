@@ -5,7 +5,7 @@ import os
 from helpers import *
 
 
-aPts = [0.34508]
+aPts = [0.3458]
 bPts = [0.95, 1]
 cPts = [0.532]
 
