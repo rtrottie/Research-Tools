@@ -1,69 +1,47 @@
-import random
-import numpy as NP
-import numpy.linalg as LA
-from helpers import *
+import pymatgen as pmg
+import numpy as np
+import os
+import os.path as path
+import pymatgen.transformations.standard_transformations as trns
+
+VESTA_DIR = '/home/ryan/programs/vesta/VESTA-x86_64/VESTA '
+MOLECULE_DIR = '/home/ryan/PycharmProjects/Research-Tools/Molecules'
+MOLECULE = 'TMA.gjf'
+SCRATCH = '/home/ryan/scratch'
+
+aligned_atom = 0
+aligned_axis = np.array([0,0,1])
+
+molecule = pmg.core.structure.Molecule.from_file(path.join(MOLECULE_DIR,MOLECULE)).get_centered_molecule()
+
+molecule.to('xyz',path.join(SCRATCH,'scratch.xyz'))
+
+unaligned_axis = molecule.sites[aligned_atom].coords
+rotation_axis = np.cross(unaligned_axis, aligned_axis)
+rotation_axis = rotation_axis/np.linalg.norm(rotation_axis)
+rotation_angle = np.arccos(np.dot(unaligned_axis,aligned_axis)/(np.linalg.norm(unaligned_axis)*np.linalg.norm(aligned_axis)))*180/np.pi
 
 
-#region VectorConversionTest
-print('\n\nTESTING VECTOR CONVERSION \n\n')
+rotation_transformation = trns.RotationTransformation(rotation_axis,rotation_angle)
+atom_list = molecule.sites
+periodic_list = list(map(lambda site: pmg.core.sites.PeriodicSite(site.specie.number,
+                                                                  site.coords,
+                                                                  pmg.core.Lattice(np.matrix([[20,0,0],[0,20,0],[0,0,20]])),
+                                                                  coords_are_cartesian=True),
+                         atom_list))
 
-vector1 = NP.matrix([[random.random()*100, random.random()*100, random.random()*100],
-           [random.random()*100, random.random()*100, random.random()*100],
-           [random.random()*100, random.random()*100, random.random()*100]])
-vector2 = NP.matrix([[random.random()*100, random.random()*100, random.random()*100],
-           [random.random()*100, random.random()*100, random.random()*100],
-           [random.random()*100, random.random()*100, random.random()*100]])
-point = NP.matrix([random.random()*100, random.random()*100, random.random()*100])
+molecule_periodic = pmg.core.Structure.from_sites(periodic_list)
 
-print(vecToCart(vector1, point))
-print(vecToCart(vector2, vecToVec(vector1, vector2, point)))
-print(point)
-print(vecToVec(vector2, vector1, vecToVec(vector1, vector2, point)))
+molecule_rotated = rotation_transformation.apply_transformation(molecule_periodic)
 
-#endregion
+print(rotation_transformation)
 
-#region SphericalTest
-print("\n\nTESTING SPHERICAL\n\n")
-print(point)
-print(sphToCart(cartToSph(point)))
-print(cartToSph(point))
-#endregion
+print('## INITIAL ##')
+print(molecule.cart_coords)
+print('## PERIODIC ##')
+print(molecule_periodic.cart_coords)
+print('## ROTATED ##')
+print(molecule_rotated.cart_coords)
 
-#region cartToVec
-print('\n\nTESTING CARTESIAN TO VECTOR')
-print(point)
-print(vecToCart(vector1, cartToVec(vector1, point)))
-print(vecToCart(vector2, cartToVec(vector2, point)))
-#endregion
-
-#region SpinTest
-print('\n\nTESTING ROTATION AND ORIGINING\n\n')
-#fLoc = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\POSCAR'
-fLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\Molecules\\DIMETHAMINE'
-sLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\POSCAR'
-fLoc = sLoc
-o = NP.matrix([1,1,1])
-ref = NP.matrix([1,-20,-20])
-o.tolist()
-p= loadPosFile(fLoc)
-r = rotatePoints(p,o,ref)
-s = translateToOrigin(r)
-savePosfile(s, sLoc)
-#endregion
-
-#region CombineTest
-# bLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\TiO2Surface\\CONTCAR'
-# aLoc = sLoc
-# point = NP.matrix([.5,0.8,.5])
-# cLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\combined\\CONTCAR'
-# a = loadPosFile(aLoc)
-# b = loadPosFile(bLoc)
-#
-# c = combinePosFiles(b, a, point)
-# savePosfile(c, cLoc)
-
-#endregion
-
-
-# p= loadPosFile('C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\POSCAR')
-# savePosfile(p,'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\CONTCAR')
+print(rotation_angle)
+print(rotation_axis)
