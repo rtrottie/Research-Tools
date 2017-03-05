@@ -1,69 +1,45 @@
-import random
-import numpy as NP
-import numpy.linalg as LA
-from helpers import *
+import pymatgen as pmg
+import numpy as np
+import os
+import os.path as path
+import pymatgen.transformations.standard_transformations as trns
+import pymatgen.io.vaspio as vasp
+import Adsorption
+import Vis
 
 
-#region VectorConversionTest
-print('\n\nTESTING VECTOR CONVERSION \n\n')
-
-vector1 = NP.matrix([[random.random()*100, random.random()*100, random.random()*100],
-           [random.random()*100, random.random()*100, random.random()*100],
-           [random.random()*100, random.random()*100, random.random()*100]])
-vector2 = NP.matrix([[random.random()*100, random.random()*100, random.random()*100],
-           [random.random()*100, random.random()*100, random.random()*100],
-           [random.random()*100, random.random()*100, random.random()*100]])
-point = NP.matrix([random.random()*100, random.random()*100, random.random()*100])
-
-print(vecToCart(vector1, point))
-print(vecToCart(vector2, vecToVec(vector1, vector2, point)))
-print(point)
-print(vecToVec(vector2, vector1, vecToVec(vector1, vector2, point)))
-
-#endregion
-
-#region SphericalTest
-print("\n\nTESTING SPHERICAL\n\n")
-print(point)
-print(sphToCart(cartToSph(point)))
-print(cartToSph(point))
-#endregion
-
-#region cartToVec
-print('\n\nTESTING CARTESIAN TO VECTOR')
-print(point)
-print(vecToCart(vector1, cartToVec(vector1, point)))
-print(vecToCart(vector2, cartToVec(vector2, point)))
-#endregion
-
-#region SpinTest
-print('\n\nTESTING ROTATION AND ORIGINING\n\n')
-#fLoc = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\TIO2_LARGE'
-fLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\Molecules\\DIMETHAMINE'
-sLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\TIO2_LARGE'
-fLoc = sLoc
-o = NP.matrix([1,1,1])
-ref = NP.matrix([1,-20,-20])
-o.tolist()
-p= loadPosFile(fLoc)
-r = rotatePoints(p,o,ref)
-s = translateToOrigin(r)
-savePosfile(s, sLoc)
-#endregion
-
-#region CombineTest
-# bLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\TiO2Surface\\CONTCAR'
-# aLoc = sLoc
-# point = NP.matrix([.5,0.8,.5])
-# cLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\combined\\CONTCAR'
-# a = loadPosFile(aLoc)
-# b = loadPosFile(bLoc)
-#
-# c = combinePosFiles(b, a, point)
-# savePosfile(c, cLoc)
-
-#endregion
+os.environ["VASP_PSP_DIR"]='/home/ryan/pseudopotential'
+MOLECULE_DIR = '/home/ryan/PycharmProjects/Research-Tools/Molecules'
+MOLECULE = 'TMA.gjf'
+SURFACE_DIR = '/home/ryan/PycharmProjects/Research-Tools/Surfaces'
+SURFACE = 'TiO2/POSCAR_TiO2_Large'
+FOLDER = '/home/ryan/scratch/'
 
 
-# p= loadPosFile('C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\TIO2_LARGE')
-# savePosfile(p,'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\CONTCAR')
+adsorbed_locations_fractional = [('O_Parallel', [0.49814, -0.03, 0.49103]), ('Ti', [0.67968, -0.03, 0.53606]), ('O_Perp', [0.40936, -0.06, 0.22763]), ('Vacuum', [.5,.75,.5])]
+adsorbed_locations_fractional = [adsorbed_locations_fractional[3]]
+rotations = [0, 40, 80]
+rotations = [rotations[2]]
+kpoints = vasp.Kpoints()
+incar = vasp.Incar.from_file(os.path.join(FOLDER, 'INCAR'))
+
+for (folder, adsorbed_location_fractional) in adsorbed_locations_fractional:
+    for rotation in rotations:
+
+
+        molecule = pmg.core.Molecule.from_file(path.join(MOLECULE_DIR,MOLECULE))
+        Adsorption.align_molecule(molecule, [0, -1, 0.5], None, 0, rotation)
+
+        surface_poscar = vasp.Poscar.from_file(path.join(SURFACE_DIR, SURFACE))
+        surface = surface_poscar.structure.copy()
+
+        for site in molecule.sites:
+            adsorbed_location_cartesian = surface.lattice.get_cartesian_coords(adsorbed_location_fractional)
+            surface.append(site.specie, adsorbed_location_cartesian + site.coords,True)
+        surface.sort()
+        poscar = vasp.Poscar(surface)
+        potcar = vasp.Potcar(poscar.site_symbols)
+        vasp.VaspInput(incar,kpoints,poscar,potcar).write_input(os.path.join(FOLDER,folder,str(rotation)))
+        Vis.open_in_Jmol(surface,'cif')
+        with open(os.path.join(FOLDER,folder,str(rotation),'TMA_'+folder+'_'+str(rotation)+'.log'),'w') as f:
+            f.write('')
