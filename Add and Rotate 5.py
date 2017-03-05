@@ -5,23 +5,23 @@ import os
 from helpers import *
 
 
-aPts = [0.34508]
-bPts = [0.95, 1]
-cPts = [0.532]
+aPts = [0.415, 0.35, 0.50]
+bPts = [-0.06]
+cPts = [0.72, 0.53, 0.49, 0.28]
 
-yaws = [0]
+yaws = [0, pi/2]
 pitchs = [0, pi/2]
-rolls = [0]
+rolls = [0, pi/4]
 
 
 
-baseLocation = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\TiO2Surface\\CONTCAR'
-moleculeLocation = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\Molecules\\ACETYLENE'
-foldersLocation = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\Folders'
+baseLocation = 'D:\\Users\\Ryan\\Google Drive CU\\Python\\Research-Tools\\Surfaces\\TiO2\\TIO2_SMALL'
+moleculeLocation = 'D:\\Users\\Ryan\\Google Drive CU\\Python\\Research-Tools\\Molecules\\PEROXIDE'
+foldersLocation = 'D:\\Users\\Ryan\\Documents\\Scrap\\Folders'
 
 # baseLocation = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\TiO2Surface\\CONTCAR'
-# moleculeLocation = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\Molecules\\BENZENE'
-# foldersLocation = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\Folders'
+# moleculeLocation = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\Molecules\\PEROXIDE'
+# foldersLocation = 'D:\\Users\\theme\\Documents\\Scrap\\'
 fileName = 'POSCAR'
 
 

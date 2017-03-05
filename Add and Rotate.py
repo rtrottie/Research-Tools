@@ -1,21 +1,23 @@
 __author__ = 'Ryan'
 from math import pi
 import random
-from helpers import *
 
 
-location = [0.37085,  0.38766,  0.8]
+location = [0.42719,  0.75,  0.25]
 yaw = pi/2
-pitch = 0
-roll = -pi
+pitch = pi/4
+roll = pi/2
 
-# baseLocation = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\SpinelSurface\\FeAl2'
-# moleculeLocation = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\Molecules\\WATER'
-# saveLocation = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\POSCAR'
+# Work Computer
+baseLocation = 'D:\\Users\\Ryan\\Documents\\Scrap\\plain\\surface\\CONTCAR'
+# moleculeLocation = 'D:\\Users\\Ryan\\Google Drive CU\\Python\\Research-Tools\\Molecules\\PEROXIDE'
+# saveLocation = 'D:\\Users\\Ryan\\Documents\\Scrap\\POSCAR'
 
-baseLocation = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\TiO2Surface\\TiO2_SMALL'
-moleculeLocation = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\Molecules\\ACETYLENE'
-saveLocation = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\POSCAR'
+# baseLocation = 'D:\\My Stuff\\GoogleDrive_CU\\Python\\Research-Tools\\Surfaces\\TiO2\\TIO2_SMALL'
+moleculeLocation = 'D:\\Users\\Ryan\\Documents\\Scrap\\molecules\\BPA\\CONTCAR'
+saveLocation = 'D:\\Users\\Ryan\\Documents\\scrap\\POSCAR'
+
+
 
 location = NP.matrix(location)
 roll = NP.longdouble(roll)

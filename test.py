@@ -38,9 +38,9 @@ print(vecToCart(vector2, cartToVec(vector2, point)))
 
 #region SpinTest
 print('\n\nTESTING ROTATION AND ORIGINING\n\n')
-#fLoc = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\POSCAR'
+#fLoc = 'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\TIO2_LARGE'
 fLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\Molecules\\DIMETHAMINE'
-sLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\POSCAR'
+sLoc = 'D:\\My Stuff\\Dropbox\Dropbox\\Research\\PycharmProjects\\Scrap\\TIO2_LARGE'
 fLoc = sLoc
 o = NP.matrix([1,1,1])
 ref = NP.matrix([1,-20,-20])
@@ -65,5 +65,5 @@ savePosfile(s, sLoc)
 #endregion
 
 
-# p= loadPosFile('C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\POSCAR')
+# p= loadPosFile('C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\TIO2_LARGE')
 # savePosfile(p,'C:\\Users\\Ryan\\Dropbox\\Research\\PycharmProjects\\Scrap\\CONTCAR')

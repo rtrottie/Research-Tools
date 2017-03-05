@@ -79,14 +79,14 @@ def savePosfile(toSave, whereToSave):
                 toWrite = toWrite + ' ' + ' '.join(toSave['movement'][label][i])
             toWrite = toWrite + '\n'
 
-    with open(whereToSave, 'wb') as f:
-        f.write(bytes(toWrite, 'UTF-8'))
+    with open(whereToSave, 'w') as f:
+        f.write(toWrite)
     return
 
 
 # takes a file with path specified by first (and only) argument
 # file MUST be formatted with no extra newlines
-def loadPosFile(toOpen):  # requires POSCAR with title and no comments along vectors or atoms
+def loadPosFile(toOpen):  # requires TIO2_LARGE with title and no comments along vectors or atoms
     with open(toOpen) as f:
         lines = f.readlines()
         i = 0
@@ -144,7 +144,7 @@ def loadPosFile(toOpen):  # requires POSCAR with title and no comments along vec
 
 # Converts between vector coordinate systems from iv to fv
 def vecToVec(iv, fv, pt):
-    fv = NP.float64(fv)
+    fv = NP.float32(fv)
     fp = pt * iv * NP.longdouble(LA.inv(fv))
     return fp
 
