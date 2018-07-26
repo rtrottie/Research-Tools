@@ -2,6 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="D:/Users/theme/PycharmProjects/chain" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Database" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../VASP-Templates" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../../theme/PycharmProjects/chain" vcs="Git" />
   </component>
 </project>

@@ -2,7 +2,7 @@ __author__ = 'ryan'
 import os
 
 def open_in_VESTA(molecule,type):
-    VESTA_DIR = '/home/ryan/programs/vesta/VESTA-x86_64/VESTA '
+    VESTA_DIR = 'C:\\Program Files\\VESTA\\VESTA.exe'
     SCRATCH = '/home/ryan/scratch/scratch.' + type
 
     molecule.to(type, SCRATCH)
