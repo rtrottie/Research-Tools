@@ -9,5 +9,7 @@
     <orderEntry type="module" module-name="chain" />
     <orderEntry type="module" module-name="Database" />
     <orderEntry type="module" module-name="VASP-Templates" />
+    <orderEntry type="module" module-name="chain" />
+    <orderEntry type="module" module-name="VTST-Tools" />
   </component>
 </module>
