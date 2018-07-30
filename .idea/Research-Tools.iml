@@ -12,4 +12,7 @@
     <orderEntry type="module" module-name="chain" />
     <orderEntry type="module" module-name="VTST-Tools" />
   </component>
+  <component name="PyDocumentationSettings">
+    <option name="renderExternalDocumentation" value="true" />
+  </component>
 </module>
